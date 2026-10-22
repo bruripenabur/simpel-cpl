@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo_unpatti.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OBE Assessment Specialist</title>
+    <meta name="description" content="Sistem Otomatisasi Perhitungan Ketercapaian CPL & CPMK (Outcome-Based Education) dan Generator Laporan Asesmen Akreditasi dilengkapi Visualisasi Recharts Gap Target 75.00." />
+    <meta property="og:title" content="OBE Assessment Specialist" />
+    <meta property="og:description" content="Sistem Otomatisasi Perhitungan Ketercapaian CPL & CPMK (Outcome-Based Education) dan Generator Laporan Asesmen Akreditasi dilengkapi Visualisasi Recharts Gap Target 75.00." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 12mm 15mm 15mm 15mm;
+        }
+        body {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          background: white !important;
+          color: black !important;
+        }
+        header, nav, .print\:hidden {
+          display: none !important;
+        }
+        #academic-report-document {
+          box-shadow: none !important;
+          border: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          max-width: 100% !important;
+        }
+        #report-cpmk-chart-container,
+        #report-cpl-chart-container,
+        #report-radar-chart-container {
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+        #report-cpmk-chart-container img,
+        #report-cpl-chart-container img,
+        #report-radar-chart-container img {
+          display: block !important;
+          width: 100% !important;
+          max-height: 280px !important;
+          object-fit: contain !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

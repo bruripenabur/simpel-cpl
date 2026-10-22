@@ -1,0 +1,6 @@
+{
+  "name": "OBE Assessment Specialist",
+  "description": "Sistem Otomatisasi Perhitungan Ketercapaian CPL & CPMK (Outcome-Based Education) dan Generator Laporan Asesmen Akreditasi dilengkapi Visualisasi Recharts Gap Target 75.00.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

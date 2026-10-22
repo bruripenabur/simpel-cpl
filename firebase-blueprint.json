@@ -1,0 +1,27 @@
+{
+  "entities": {
+    "CourseAssessment": {
+      "title": "CourseAssessment",
+      "description": "OBE course assessment data per study program and course code",
+      "type": "object",
+      "properties": {
+        "courseCode": { "type": "string", "description": "Course code" },
+        "courseName": { "type": "string", "description": "Course name" },
+        "studyProgram": { "type": "string", "description": "Study program name" },
+        "prodiId": { "type": "string", "description": "Study program official code (multi-tenancy)" },
+        "faculty": { "type": "string", "description": "Faculty name" },
+        "lecturerName": { "type": "string", "description": "Lecturer full name & title" },
+        "academicYear": { "type": "string", "description": "Academic year" },
+        "semester": { "type": "string", "description": "Semester" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["courseCode", "courseName", "prodiId"]
+    }
+  },
+  "firestore": {
+    "/databases/{database}/documents/assessments/{assessmentId}": {
+      "schema": { "$ref": "#/entities/CourseAssessment" },
+      "description": "Course assessments collection with multi-tenancy prodi isolation"
+    }
+  }
+}
