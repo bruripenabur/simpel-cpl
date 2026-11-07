@@ -86,6 +86,13 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
         rpsMimeType = rpsFile.type || 'application/pdf';
       }
 
+      let rubrikBase64 = '';
+      let rubrikMimeType = '';
+      if (rubrikFile) {
+        rubrikBase64 = await fileToBase64(rubrikFile);
+        rubrikMimeType = rubrikFile.type || 'application/pdf';
+      }
+
       let gradesBase64 = '';
       let gradesMimeType = '';
       if (gradesFile) {
@@ -100,9 +107,14 @@ export const FileUploadModal: React.FC<FileUploadModalProps> = ({
           rpsBase64,
           rpsMimeType,
           rpsText,
+          rubrikBase64,
+          rubrikMimeType,
           gradesBase64,
           gradesMimeType,
           gradesText,
+          rpsFilename: rpsFile?.name || '',
+          rubrikFilename: rubrikFile?.name || '',
+          gradesFilename: gradesFile?.name || '',
         }),
       });
 

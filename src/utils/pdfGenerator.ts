@@ -220,7 +220,7 @@ export function exportOBEAssessmentToPDF(
   );
   currentY += 4.2;
 
-  const rawSem = (data.semester || '1').trim();
+  const rawSem = String(data.semester || '1').trim();
   const cleanSem = rawSem.replace(/^semester\s+semester\s+/i, 'Semester ');
   const semesterLabel = cleanSem.toLowerCase().startsWith('semester') ? cleanSem : `Semester ${cleanSem}`;
 

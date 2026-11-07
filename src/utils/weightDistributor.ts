@@ -192,10 +192,9 @@ export function autoGenerateClassAverages(
 ): UnitClass[] {
   // Realistic university academic score base templates (mean ~78 - 83)
   const scorePresets = [
-    [78.5, 82.0, 76.4, 80.0, 84.5, 81.2],
-    [80.0, 78.5, 82.4, 77.8, 83.0, 79.5],
-    [76.8, 81.5, 79.0, 82.5, 78.0, 80.4],
-    [82.2, 79.0, 77.5, 81.0, 85.0, 78.8],
+    [79.3, 80.5, 77.4, 80.6, 84.1, 82.1], // Unit 1
+    [80.7, 79.1, 81.4, 78.3, 82.1, 80.2], // Unit 2
+    [77.0, 81.8, 79.7, 82.6, 79.2, 81.0], // Unit 3
   ];
 
   return unitClasses.map((unit, unitIdx) => {

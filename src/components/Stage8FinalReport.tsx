@@ -74,62 +74,85 @@ export const Stage8FinalReport: React.FC<Stage8Props> = ({
   const [savedDbToast, setSavedDbToast] = useState('');
   const [nextCourseDecision, setNextCourseDecision] = useState<'prompt' | 'yes' | 'no'>('prompt');
 
-  const totalStudents = data.unitClasses.reduce((sum, u) => sum + (u.studentCount || 0), 0);
+  const safeData: OBEAssessmentData = data || {
+    courseCode: 'MK-3101',
+    courseName: 'Mata Kuliah Berbasis OBE',
+    credits: 3,
+    semester: '3',
+    academicYear: '2026/2027',
+    studyProgram: 'S1 Budidaya Perairan',
+    faculty: 'Fakultas Perikanan dan Ilmu Kelautan',
+    lecturerName: 'Dr. Bruri Melky Laimeheriwa, S.Pi., M.Si.',
+    lecturerNip: '19880412 201504 1 002',
+    headOfStudyProgram: 'Daniel G. Louhenapessy, S.Pi., M.Sc.',
+    targetBenchmark: 75.0,
+    cpls: [],
+    cpmks: [],
+    components: [],
+    students: [],
+    unitClasses: [],
+    narrativeNotes: {}
+  };
+  const safeCpmkResults = cpmkResults || [];
+  const safeCplResults = cplResults || [];
+  const safeComponentTotalAverages = componentTotalAverages || {};
+
+  const totalStudents = (safeData.unitClasses || []).reduce((sum, u) => sum + (u.studentCount || 0), 0);
   const overallAvg = (
-    cpmkResults.reduce((acc, c) => acc + c.capaianAkhir, 0) / Math.max(1, cpmkResults.length)
+    safeCpmkResults.reduce((acc, c) => acc + (c.capaianAkhir || 0), 0) / Math.max(1, safeCpmkResults.length)
   ).toFixed(2);
 
   // Chart data for embedding
-  const cpmkChartData = cpmkResults.map((c) => ({
+  const cpmkChartData = safeCpmkResults.map((c) => ({
     name: c.cpmkCode,
-    capaian: c.capaianAkhir,
+    capaian: c.capaianAkhir || 0,
     target: targetBenchmark,
-    isAchieved: c.isAchieved,
+    isAchieved: c.isAchieved || false,
   }));
 
-  const cplChartData = cplResults.map((c) => ({
+  const cplChartData = safeCplResults.map((c) => ({
     name: c.cplCode,
-    capaian: c.capaianAkhir,
+    capaian: c.capaianAkhir || 0,
     target: targetBenchmark,
-    isAchieved: c.isAchieved,
+    isAchieved: c.isAchieved || false,
   }));
 
   const cpmkChartImage = React.useMemo(() => {
-    return generateCPMKBarChartImage(cpmkResults, targetBenchmark);
-  }, [cpmkResults, targetBenchmark]);
+    return generateCPMKBarChartImage(safeCpmkResults, targetBenchmark);
+  }, [safeCpmkResults, targetBenchmark]);
 
   const cplChartImage = React.useMemo(() => {
-    return generateCPLBarChartImage(cplResults, targetBenchmark);
-  }, [cplResults, targetBenchmark]);
+    return generateCPLBarChartImage(safeCplResults, targetBenchmark);
+  }, [safeCplResults, targetBenchmark]);
 
   const radarChartImage = React.useMemo(() => {
-    return generateRadarSpiderWebChartImage(cpmkResults, cplResults, targetBenchmark);
-  }, [cpmkResults, cplResults, targetBenchmark]);
+    return generateRadarSpiderWebChartImage(safeCpmkResults, safeCplResults, targetBenchmark);
+  }, [safeCpmkResults, safeCplResults, targetBenchmark]);
 
   const individualStudentAchievements = React.useMemo(() => {
-    return calculateStudentIndividualAchievements(data);
-  }, [data]);
+    return calculateStudentIndividualAchievements(safeData);
+  }, [safeData]);
 
   const cleanSemesterText = React.useMemo(() => {
-    const raw = (data.semester || '1').trim();
+    const raw = (safeData.semester || '1').toString().trim();
     const deDuplicated = raw.replace(/^semester\s+semester\s+/i, 'Semester ');
     return deDuplicated.toLowerCase().startsWith('semester')
       ? deDuplicated
       : `Semester ${deDuplicated}`;
-  }, [data.semester]);
+  }, [safeData.semester]);
 
-  const singleLecturerName = getSingleLecturerName(data.lecturerName);
-  const singleLecturerNip = getSingleLecturerNip(data.lecturerNip);
+  const singleLecturerName = getSingleLecturerName(safeData.lecturerName);
+  const singleLecturerNip = getSingleLecturerNip(safeData.lecturerNip);
 
   const radarChartData = [
-    ...cpmkResults.map((c) => ({
+    ...safeCpmkResults.map((c) => ({
       subject: c.cpmkCode,
-      capaian: c.capaianAkhir,
+      capaian: c.capaianAkhir || 0,
       target: targetBenchmark,
     })),
-    ...cplResults.map((c) => ({
+    ...safeCplResults.map((c) => ({
       subject: c.cplCode,
-      capaian: c.capaianAkhir,
+      capaian: c.capaianAkhir || 0,
       target: targetBenchmark,
     })),
   ];

@@ -34,10 +34,10 @@ import { CentralAdminOBEDashboard } from './components/CentralAdminOBEDashboard'
 import { EarlyWarningNotification } from './components/EarlyWarningNotification';
 import { TemplateDownloadModal } from './components/TemplateDownloadModal';
 import { getProdiFromUrl, isUniversalPortalLocked, LIST_PROGRAM_STUDI } from './utils/prodiHelper';
-import { saveAssessmentOnStage8 } from './utils/firebaseClient';
 import {
   loadSupabaseConfig,
   testSupabaseConnection,
+  syncCourseToSupabase,
 } from './utils/supabaseClient';
 import {
   downloadGradeTemplateExcel,
@@ -166,17 +166,19 @@ export default function App() {
     }
   }, []);
 
-  // Save courseData to Firestore automatically when reaching Stage 8
+  // Save courseData to Supabase automatically when reaching Stage 8
   useEffect(() => {
     if (currentStage === 8 && courseData.courseCode) {
-      const prodiId = userSession?.prodiId || courseData.prodiId || '86004';
-      saveAssessmentOnStage8(courseData, prodiId).then((success) => {
-        if (success) {
-          console.log('Stage 8 assessment courseData successfully saved to Firestore!');
-        }
-      });
+      const cfg = loadSupabaseConfig();
+      if (cfg.projectUrl && cfg.anonKey) {
+        syncCourseToSupabase(courseData).then((res) => {
+          if (res.success) {
+            console.log('Stage 8 assessment courseData successfully saved to Supabase!');
+          }
+        });
+      }
     }
-  }, [currentStage, courseData, userSession]);
+  }, [currentStage, courseData]);
 
   // Recalculate results reactively whenever courseData changes
   const {
